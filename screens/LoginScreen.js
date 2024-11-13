@@ -18,7 +18,7 @@ const LoginScreen = ({navigation}) => {
   const BACKEND_URL = process.env['BACKEND_API'];
   const handleLogin = async () => {
     try {
-      const response = await axios.post(`/auth/login`, {
+      const response = await axios.post(`${BACKEND_URL}/auth/login`, {
         email,
         password,
       });
