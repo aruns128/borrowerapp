@@ -6,19 +6,19 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  ImageBackground,
 } from 'react-native';
 import axios from 'axios';
-import AvatarLogo from './AvatarLogo';
+import AvatarLogo from '../utils/AvatarLogo';
 import {BACKEND_API} from '@env';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const BACKEND_URL = process.env['BACKEND_API'];
   const handleLogin = async () => {
     try {
-      const response = await axios.post(`${BACKEND_URL}/auth/login`, {
+      const response = await axios.post(`${BACKEND_API}/auth/login`, {
         email,
         password,
       });
@@ -36,13 +36,11 @@ const LoginScreen = ({navigation}) => {
       }
     } catch (error) {
       if (error.response) {
-        // Server responded with a status other than 200 range
         Alert.alert(
           'Login Failed',
           error.response.data.message || 'Invalid username or password.',
         );
       } else {
-        // Error in making request
         Alert.alert('Error', 'Unable to connect to the server.');
       }
     }
@@ -50,9 +48,20 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <View style={styles.mainContainer}>
+      {/* Top 25% Background Image */}
+      <ImageBackground
+        source={require('../../assets/images/background-image.png')}
+        style={styles.topBackground}
+        resizeMode="cover"
+      />
+
+      {/* Bottom 75% Login Card */}
       <View style={styles.container}>
-        <View style={styles.mainContainer}>
-          <AvatarLogo title="BM" />
+        <View style={styles.logoContainer}>
+          <AvatarLogo
+            type="logo"
+            logoSource={require('../../assets/images/app_logo.png')}
+          />
         </View>
         <Text style={styles.title}>Login</Text>
         <TextInput
@@ -79,11 +88,16 @@ const LoginScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
+    backgroundColor: '#fff',
+  },
+  topBackground: {
+    flex: 0.45,
     justifyContent: 'center',
     alignItems: 'center',
   },
   container: {
-    width: '90%',
+    flex: 0.55,
+    width: '100%',
     padding: 20,
     backgroundColor: '#fff',
     borderRadius: 10,
@@ -92,14 +106,17 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 5,
-    marginBottom: 20,
+    alignSelf: 'center',
+    marginTop: -20,
+  },
+  logoContainer: {
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
-    margin: 30,
   },
   input: {
     width: '100%',

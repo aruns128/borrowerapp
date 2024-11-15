@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, ImageBackground } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import {View, Text, StyleSheet, ImageBackground} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import Animated, {FadeIn} from 'react-native-reanimated';
 
-const SplashScreen = ({ navigation }) => {
+const SplashScreen = ({navigation}) => {
   return (
     <ImageBackground
-      source={require('../assets/images/background-image.png')}
+      source={require('../../assets/images/background-image.png')}
       style={styles.backgroundImage}
       resizeMode="cover">
       <View style={styles.container}>
@@ -71,12 +71,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   gotoLoginButton: {
-    backgroundColor: '#6875E0',
+    backgroundColor: '#416FDF',
     borderRadius: 12,
     paddingVertical: 12,
     paddingHorizontal: 25,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: {width: 0, height: 4},
     shadowOpacity: 0.1,
     shadowRadius: 6,
     elevation: 5,

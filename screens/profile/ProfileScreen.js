@@ -1,7 +1,7 @@
 // screens/ProfileScreen.js
 import React from 'react';
 import {View, Text, Button, StyleSheet, Image} from 'react-native';
-import AvatarLogo from './AvatarLogo';
+import AvatarLogo from '../utils/AvatarLogo';
 
 const ProfileScreen = ({navigation}) => {
   const handleLogout = () => {
@@ -16,7 +16,7 @@ const ProfileScreen = ({navigation}) => {
     <View style={styles.container}>
       <Text style={styles.title}>Profile</Text>
 
-      <AvatarLogo title={"AK"}/>
+      <AvatarLogo title={'AK'} />
 
       {/* Logout Button */}
       <Button title="Logout" onPress={handleLogout} />
