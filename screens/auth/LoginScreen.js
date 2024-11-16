@@ -11,12 +11,17 @@ import {
 import axios from 'axios';
 import AvatarLogo from '../utils/AvatarLogo';
 import {BACKEND_API} from '@env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import {CircleFade, Flow} from 'react-native-animated-spinkit';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
+    setLoading(true);
     try {
       const response = await axios.post(`${BACKEND_API}/auth/login`, {
         email,
@@ -26,7 +31,7 @@ const LoginScreen = ({navigation}) => {
       const data = response.data;
 
       if (response.status === 200) {
-        Alert.alert('Login Successful!', `Welcome, ${data.email}`);
+        await AsyncStorage.setItem('authToken', data.user._id);
         navigation.replace('MainHome');
       } else {
         Alert.alert(
@@ -35,14 +40,15 @@ const LoginScreen = ({navigation}) => {
         );
       }
     } catch (error) {
-      if (error.response) {
-        Alert.alert(
-          'Login Failed',
-          error.response.data.message || 'Invalid username or password.',
-        );
-      } else {
-        Alert.alert('Error', 'Unable to connect to the server.');
-      }
+      console.log(error);
+      Alert.alert(
+        'Error',
+        error.response
+          ? error.response.data.message
+          : 'Unable to connect to the server.',
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,7 +84,10 @@ const LoginScreen = ({navigation}) => {
           secureTextEntry
         />
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Login</Text>
+          <View style={styles.buttonContainer}>
+            <Text style={styles.buttonText}>Login</Text>
+            {loading && <CircleFade size={18} color="#fff" />}
+          </View>
         </TouchableOpacity>
       </View>
     </View>
@@ -126,6 +135,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 10,
     marginBottom: 15,
+  },
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   button: {
     backgroundColor: '#6875E0',

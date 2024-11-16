@@ -1,9 +1,27 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {View, Text, StyleSheet, ImageBackground} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import Animated, {FadeIn} from 'react-native-reanimated';
+import {BACKEND_API} from '@env';
 
 const SplashScreen = ({navigation}) => {
+  useEffect(() => {
+    const checkToken = async () => {
+      const token = await AsyncStorage.getItem('authToken');
+
+      setTimeout(() => {
+        if (token) {
+          navigation.replace('MainHome');
+        } else {
+          navigation.replace('Login');
+        }
+      }, 2000); // 5-second delay before navigating
+    };
+
+    checkToken();
+  }, [navigation]);
+  console.log(BACKEND_API);
+
   return (
     <ImageBackground
       source={require('../../assets/images/background-image.png')}
@@ -26,13 +44,6 @@ const SplashScreen = ({navigation}) => {
           <Text style={styles.highlight}>Borrower</Text>, and{' '}
           <Text style={styles.highlight}>Lender</Text> details efficiently.
         </Animated.Text>
-
-        {/* Go to Login Button */}
-        <TouchableOpacity
-          style={styles.gotoLoginButton}
-          onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.gotoLoginText}>Go to Login</Text>
-        </TouchableOpacity>
       </View>
     </ImageBackground>
   );
@@ -69,23 +80,6 @@ const styles = StyleSheet.create({
   highlight: {
     color: '#FFD700',
     fontWeight: 'bold',
-  },
-  gotoLoginButton: {
-    backgroundColor: '#416FDF',
-    borderRadius: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 25,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 4},
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 5,
-  },
-  gotoLoginText: {
-    color: '#fff',
-    fontSize: 16,
-    textAlign: 'center',
-    fontWeight: '600',
   },
 });
 

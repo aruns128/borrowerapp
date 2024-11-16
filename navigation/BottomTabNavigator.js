@@ -4,6 +4,7 @@ import {TouchableOpacity} from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import HomeScreen from '../screens/home/HomeScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
+import LoansScreen from '../screens/loans/LoansScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,7 +30,7 @@ const BottomTabNavigator = () => {
       />
       <Tab.Screen
         name="Loans"
-        component={ProfileScreen} // You might want to replace this with a LoansScreen
+        component={LoansScreen}
         options={{
           tabBarIcon: ({color, size}) => (
             <FontAwesome5
