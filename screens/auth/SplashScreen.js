@@ -15,7 +15,7 @@ const SplashScreen = ({navigation}) => {
         } else {
           navigation.replace('Login');
         }
-      }, 2000); // 5-second delay before navigating
+      }, 2000); // 2-second delay before navigating
     };
 
     checkToken();

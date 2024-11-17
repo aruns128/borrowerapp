@@ -70,19 +70,28 @@ const LoginScreen = ({navigation}) => {
           />
         </View>
         <Text style={styles.title}>Login</Text>
+
+        {/* Email Label and Input */}
+        <Text style={styles.inputLabel}>Email</Text>
         <TextInput
-          placeholder="Email"
+          placeholderTextColor="#A9A9A9"
+          placeholder="Enter your email"
           style={styles.input}
           value={email}
           onChangeText={setEmail}
         />
+
+        {/* Password Label and Input */}
+        <Text style={styles.inputLabel}>Password</Text>
         <TextInput
-          placeholder="Password"
+          placeholderTextColor="#A9A9A9"
+          placeholder="Enter your password"
           style={styles.input}
           value={password}
           onChangeText={setPassword}
           secureTextEntry
         />
+
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <View style={styles.buttonContainer}>
             <Text style={styles.buttonText}>Login</Text>
@@ -126,6 +135,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
+  },
+  inputLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    marginLeft: 5,
+    color: '#333',
   },
   input: {
     width: '100%',
