@@ -6,7 +6,11 @@ import {
   ScrollView,
   ImageBackground,
 } from 'react-native';
-import {getNextDueDate, getFormatDate} from '../utils/Helper';
+import {
+  getNextDueDate,
+  getFormatDate,
+  getDayCountBetweenDates,
+} from '../utils/Helper';
 
 const LoanDetailsScreen = ({route, navigation}) => {
   const {loan} = route.params; // Get the loan details from navigation
@@ -21,10 +25,15 @@ const LoanDetailsScreen = ({route, navigation}) => {
     );
   }
 
+  const daysUntilDue = getDayCountBetweenDates(loan.startDate);
+
+  // Apply red or green color based on the number of days
+  const dueDateStyle = daysUntilDue <= 30 ? styles.redValue : styles.greenValue;
+
   const renderDetailRow = (label, value, highlight = false) => (
     <View style={styles.row}>
       <Text style={styles.label}>{label}:</Text>
-      <Text style={[styles.value, highlight && styles.redValue]}>{value}</Text>
+      <Text style={[styles.value, highlight && dueDateStyle]}>{value}</Text>
     </View>
   );
 
@@ -59,6 +68,7 @@ const LoanDetailsScreen = ({route, navigation}) => {
         {renderDetailRow('Months Elapsed', `${loan.monthsElapsed}`)}
         {renderDetailRow('Start Date', getFormatDate(loan.startDate))}
         {renderDetailRow('Next Due Date', getNextDueDate(loan.startDate), true)}
+        {renderDetailRow('Next Due Days', `${daysUntilDue} days`, true)}
 
         {/* Lender Details */}
         <Text style={styles.sectionTitle}>Lender Information</Text>
@@ -120,7 +130,10 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   redValue: {
-    color: 'red', // Make the "Next Due Date" red
+    color: 'red', // Make the "Next Due Date" red when within 30 days
+  },
+  greenValue: {
+    color: 'green', // Make the "Next Due Date" green when more than 30 days away
   },
 });
 

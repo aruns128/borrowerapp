@@ -32,19 +32,24 @@ export const getFormatDate = startDate => {
   return `${day}-${month}-${year}`;
 };
 
-export const getDayCountBetweenDates = nextDueDate => {
-  console.log(nextDueDate);
-  // Get today's date
-  const today = new Date(); // No need to format today, we can use the Date object directly
+export const getDayCountBetweenDates = inputDate => {
+  const targetDate = getNextDueDate(inputDate);
+  // Split the targetDate into day, month, and year
+  const [day, month, year] = targetDate.split('-').map(Number);
 
-  // Convert nextDueDate string to a Date object
-  const dueDate = new Date(nextDueDate);
+  // Create a Date object for the target date
+  const target = new Date(year, month - 1, day); // Month is 0-indexed in JavaScript
 
-  // Get the difference in time (in milliseconds)
-  const timeDifference = today.getTime() - dueDate.getTime();
+  // Get the current date
+  const today = new Date();
 
-  console.log(timeDifference);
+  // Calculate the difference in milliseconds
+  const differenceInMilliseconds = target - today;
 
-  // Convert the time difference from milliseconds to days
-  return Math.ceil(timeDifference / (1000 * 3600 * 24)); // Difference in days
+  // Convert the difference to days
+  const differenceInDays = Math.ceil(
+    differenceInMilliseconds / (1000 * 60 * 60 * 24),
+  );
+
+  return differenceInDays;
 };
