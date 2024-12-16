@@ -132,7 +132,7 @@ const LoansListingScreen = ({navigation}) => {
     navigation.navigate('Create Loan');
   };
 
-  if (true) {
+  if (loading) {
     return (
       <View style={styles.loaderContainer}>
         <ActivityIndicator size="large" color="#6a11cb" />
