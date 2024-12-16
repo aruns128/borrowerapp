@@ -83,7 +83,9 @@ const Dashboard = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Lender Dashboard</Text>
       {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
+        <View style={styles.loaderContainer}>
+          <ActivityIndicator size="large" color="#6a11cb" />
+        </View>
       ) : (
         <FlatList
           data={data}
@@ -106,6 +108,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
     textAlign: 'center',
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   card: {
     backgroundColor: '#fff',

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   Animated,
+  ActivityIndicator,
 } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -16,6 +17,7 @@ import {BACKEND_API} from '@env';
 const ProfileScreen = ({navigation}) => {
   const [user, setUser] = useState(null);
   const [fadeAnim] = useState(new Animated.Value(0)); // Animation
+  const [loading, setLoading] = useState(true); // Loading state
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -39,6 +41,8 @@ const ProfileScreen = ({navigation}) => {
       } catch (error) {
         console.error('Error fetching user details:', error);
         Alert.alert('Error', 'Failed to fetch user details. Please try again.');
+      } finally {
+        setLoading(false); // Hide the loader after data fetch
       }
     };
 
@@ -55,6 +59,14 @@ const ProfileScreen = ({navigation}) => {
       Alert.alert('Logout Failed', 'Unable to log out. Please try again.');
     }
   };
+
+  if (loading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#6a11cb" />
+      </View>
+    );
+  }
 
   if (!user) {
     return (
@@ -112,6 +124,12 @@ const ProfileScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: '#f7f8fa'},
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f7f8fa',
+  },
   headerContainer: {
     height: 250,
     borderBottomLeftRadius: 30,

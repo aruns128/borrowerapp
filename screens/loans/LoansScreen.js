@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
 import axios from 'axios';
 import {BACKEND_API} from '@env';
@@ -131,10 +132,10 @@ const LoansListingScreen = ({navigation}) => {
     navigation.navigate('Create Loan');
   };
 
-  if (loading) {
+  if (true) {
     return (
-      <View style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>Loading loans...</Text>
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#6a11cb" />
       </View>
     );
   }
@@ -183,6 +184,12 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     color: '#6a11cb',
   },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f7f8fa',
+  },
   searchInput: {
     height: 40,
     borderColor: '#ccc',
@@ -218,16 +225,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '400',
     color: '#333',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f7f8fa',
-  },
-  loadingText: {
-    fontSize: 18,
-    color: '#999',
   },
   noLoansContainer: {
     flex: 1,
