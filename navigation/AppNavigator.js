@@ -7,6 +7,7 @@ import BottomTabNavigator from './BottomTabNavigator';
 import LoanDetailsScreen from '../screens/loans/LoanDetailsScreen';
 import CreateLoanScreen from '../screens/loans/CreateLoanScreen';
 import LoansScreen from '../screens/loans/LoansScreen';
+import EditLoanScreen from '../screens/loans/EditLoanScreen';
 
 const Stack = createStackNavigator();
 
@@ -37,6 +38,11 @@ const AppNavigator = () => {
         <Stack.Screen
           name="Create Loan"
           component={CreateLoanScreen}
+          options={{headerShown: true}} // Set header if needed
+        />
+        <Stack.Screen
+          name="Edit Loan"
+          component={EditLoanScreen}
           options={{headerShown: true}} // Set header if needed
         />
       </Stack.Navigator>

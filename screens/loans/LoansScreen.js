@@ -18,6 +18,7 @@ import {
   getFormatDate,
   getDayCountBetweenDates,
 } from '../utils/Helper';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const LoansListingScreen = ({navigation}) => {
   const [loans, setLoans] = useState([]);
@@ -85,10 +86,47 @@ const LoansListingScreen = ({navigation}) => {
     const dueDateStyle =
       daysUntilDue <= 30 ? styles.redValue : styles.greenValue;
 
+    const handleDelete = async () => {
+      Alert.alert(
+        'Confirm Deletion',
+        'Are you sure you want to delete this loan?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Deletion cancelled'),
+            style: 'cancel',
+          },
+          {
+            text: 'Delete',
+            onPress: async () => {
+              try {
+                const response = await axios.delete(
+                  `${BACKEND_API}/borrower/loans/${item._id}`,
+                );
+                if (response.data.success) {
+                  Alert.alert('Success', 'Loan deleted successfully');
+                  fetchLoans(); // Refresh the list after deletion
+                } else {
+                  Alert.alert('Error', response.data.message);
+                }
+              } catch (error) {
+                console.error('Error deleting loan:', error);
+                Alert.alert('Error', 'Failed to delete loan.');
+              }
+            },
+            style: 'destructive',
+          },
+        ],
+        {cancelable: true},
+      );
+    };
+
+    const handleEdit = () => {
+      navigation.navigate('Edit Loan', {editData: item});
+    };
+
     return (
-      <TouchableOpacity
-        style={styles.loanCard}
-        onPress={() => navigation.navigate('Loan Details', {loan: item})}>
+      <View style={styles.loanCard}>
         <View style={styles.row}>
           <Text style={styles.label}>Borrower:</Text>
           <Text style={styles.value}>{item.borrower.name}</Text>
@@ -98,16 +136,8 @@ const LoansListingScreen = ({navigation}) => {
           <Text style={styles.value}>₹{item.principal}</Text>
         </View>
         <View style={styles.row}>
-          <Text style={styles.label}>Interest/Month:</Text>
-          <Text style={styles.value}>₹{item.interestPerMonth}</Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.label}>Remaining Interest:</Text>
-          <Text style={styles.value}>₹{item.remainingInterest}</Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.label}>Total Amount:</Text>
-          <Text style={styles.value}>₹{item.totalAmountForElapsedMonths}</Text>
+          <Text style={styles.label}>Status:</Text>
+          <Text style={styles.value}>{item.status}</Text>
         </View>
         <View style={styles.row}>
           <Text style={styles.label}>Start Date:</Text>
@@ -124,7 +154,20 @@ const LoansListingScreen = ({navigation}) => {
           <Text
             style={[styles.value, dueDateStyle]}>{`${daysUntilDue} days`}</Text>
         </View>
-      </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          {/* <TouchableOpacity style={styles.editButton} onPress={handleEdit}>
+            <Text style={styles.buttonText}>Edit</Text>
+          </TouchableOpacity> */}
+          <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
+            <FontAwesome5
+              name="trash"
+              size={18}
+              color={'white'}
+              solid={false}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
     );
   };
 
@@ -257,6 +300,30 @@ const styles = StyleSheet.create({
   },
   greenValue: {
     color: 'green',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    marginTop: 10,
+  },
+  editButton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  deleteButton: {
+    backgroundColor: '#FF5733',
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 14,
+    textAlign: 'center',
   },
 });
 
